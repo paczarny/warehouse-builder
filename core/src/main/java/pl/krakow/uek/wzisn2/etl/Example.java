@@ -1,4 +1,4 @@
-package com.github.kbednarz.webscraper;
+package pl.krakow.uek.wzisn2.etl;
 
 public class Example {
 

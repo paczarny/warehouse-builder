@@ -1,5 +1,5 @@
 subprojects {
-    group 'com.github.kbednarz'
+    group 'pl.krakow.uek.wzisn2'
     version '1.0-SNAPSHOT'
 
     apply plugin: 'java'

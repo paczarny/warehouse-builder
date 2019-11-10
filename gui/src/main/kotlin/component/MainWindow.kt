@@ -1,4 +1,4 @@
-package com.github.kbednarz.webscraper.component
+package pl.krakow.uek.wzisn2.etl.component
 
 import tornadofx.View
 import tornadofx.hbox

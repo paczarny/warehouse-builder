@@ -1,6 +1,6 @@
-package com.github.kbednarz.webscraper
+package pl.krakow.uek.wzisn2.etl
 
-import com.github.kbednarz.webscraper.component.MainWindow
+import pl.krakow.uek.wzisn2.etl.component.MainWindow
 import tornadofx.App
 import tornadofx.launch
 
