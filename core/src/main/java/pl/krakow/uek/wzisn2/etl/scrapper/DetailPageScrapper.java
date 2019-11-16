@@ -6,10 +6,10 @@ import pl.krakow.uek.wzisn2.etl.WebSiteDownloader;
 
 import java.io.IOException;
 
-public class PageScrapper {
+public class DetailPageScrapper {
     private Document doc;
 
-    public PageScrapper(String url) throws IOException {
+    public DetailPageScrapper(String url) throws IOException {
         WebSiteDownloader web = new WebSiteDownloader(url);
         doc = web.getDocument();
     }
