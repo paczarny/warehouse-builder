@@ -51,7 +51,7 @@ public class WebSiteDownloader {
         return html;
     }
 
-    Document getDocument() throws IOException {
+    public Document getDocument() throws IOException {
         Document doc = this.prepareConnection(this.address).get();
         return doc;
     }

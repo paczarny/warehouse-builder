@@ -9,4 +9,9 @@ subprojects {
     repositories {
         mavenCentral()
     }
+
+    dependencies {
+        compile group: 'org.slf4j', name: 'slf4j-api', version: '1.8.0-beta4'
+        compile group: 'org.slf4j', name: 'slf4j-simple', version: '1.8.0-beta4'
+    }
 }
