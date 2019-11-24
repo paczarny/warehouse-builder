@@ -1,5 +1,6 @@
 package pl.krakow.uek.wzisn2.etl.view
 
+import javafx.beans.property.SimpleBooleanProperty
 import javafx.scene.text.FontWeight
 import javafx.scene.text.TextAlignment
 import pl.krakow.uek.wzisn2.etl.controller.AppStylesheet
@@ -8,6 +9,7 @@ import tornadofx.*
 
 class MainView : View() {
     private val controller: MainViewController by inject()
+    private val disable = SimpleBooleanProperty(false)
 
     override val root = vbox {
         addClass(AppStylesheet.mainView)
@@ -20,16 +22,16 @@ class MainView : View() {
                 fontWeight = FontWeight.EXTRA_BOLD
             }
         }
-        add(ProgressButton("Run ETL process") {
+        add(ProgressButton("Run ETL process", disable) {
             controller.startEtl()
         })
-        add(ProgressButton("Run E process") {
+        add(ProgressButton("Run E process", disable) {
             controller.startE()
         })
-        add(ProgressButton("Run T process") {
+        add(ProgressButton("Run T process", disable) {
             controller.startT()
         })
-        add(ProgressButton("Run L process") {
+        add(ProgressButton("Run L process", disable) {
             controller.startL()
         })
     }
