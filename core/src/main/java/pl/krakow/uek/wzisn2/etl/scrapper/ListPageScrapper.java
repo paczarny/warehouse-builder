@@ -2,7 +2,6 @@ package pl.krakow.uek.wzisn2.etl.scrapper;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
-import pl.krakow.uek.wzisn2.etl.WebSiteDownloader;
 
 import java.io.IOException;
 import java.util.List;
@@ -12,8 +11,8 @@ public class ListPageScrapper {
     private Document doc;
 
     public ListPageScrapper(String url) throws IOException {
-        WebSiteDownloader web = new WebSiteDownloader(url);
-        doc = web.getDocument();
+        WebsiteDownloader web = new WebsiteDownloader();
+        doc = web.getDocument(url);
     }
 
     public List<String> getAdvertUrls() {
