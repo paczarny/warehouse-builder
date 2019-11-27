@@ -4,9 +4,11 @@ import pl.krakow.uek.wzisn2.etl.ModuleRunner
 import tornadofx.*
 
 class MainViewController : Controller() {
+    private var moduleRunner: ModuleRunner = ModuleRunner()
+
     fun startEtl() {
         println("ETL process started")
-        ModuleRunner().run()
+        moduleRunner.run()
     }
 
     fun startE() {

@@ -16,11 +16,12 @@ class ProgressButton(title: String, disable: SimpleBooleanProperty, actionOnClic
                 runAsync {
                     actionInProgress.value = true
                     disable.value = true
-
-                    actionOnClick()
-
-                    actionInProgress.value = false
-                    disable.value = false
+                    try {
+                        actionOnClick()
+                    } finally {
+                        actionInProgress.value = false
+                        disable.value = false
+                    }
                 }
             }
             disableWhen { actionInProgress }
