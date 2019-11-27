@@ -15,6 +15,16 @@ public class AdvertService {
         this.advertisementRepository = new AdvertRepository(connector.getDb());
     }
 
+    public void extractAllPages(String url) throws IOException {
+        ListPageScrapper listPageScrapper = new ListPageScrapper(url);
+        Integer lastPage = listPageScrapper.getLastPage();
+
+        for (int i = 1; i < lastPage; i++) {
+            scrapListPage(url + "?page=" + i);
+        }
+
+    }
+
     public void scrapListPage(String url) throws IOException {
         ListPageScrapper listPageScrapper = new ListPageScrapper(url);
         List<String> advertUrls = listPageScrapper.getAdvertUrls()

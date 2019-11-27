@@ -19,4 +19,10 @@ public class ListPageScrapper {
         Elements links = doc.getElementsByAttributeValue("data-cy", "listing-ad-title");
         return links.stream().map(e -> e.attr("href")).collect(Collectors.toList());
     }
+
+    public Integer getLastPage() {
+        var lastLink = doc.getElementsByClass("pager").select("a[data-cy='page-link-last']").last().attr("href");
+        var pageNumber = lastLink.substring(lastLink.lastIndexOf("=") + 1);
+        return Integer.valueOf(pageNumber);
+    }
 }
