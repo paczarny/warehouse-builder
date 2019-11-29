@@ -23,10 +23,10 @@ class MainView : View() {
             }
         }
         add(ProgressButton("Run ETL process", disable) {
-            controller.startEtl()
+            controller.startEtl(it)
         })
         add(ProgressButton("Run E process", disable) {
-            controller.startE()
+            controller.startE(it)
         })
         add(ProgressButton("Run T process", disable) {
             controller.startT()
