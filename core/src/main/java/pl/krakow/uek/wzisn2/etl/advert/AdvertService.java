@@ -18,6 +18,14 @@ public class AdvertService {
         this.advertisementRepository = new AdvertRepository(connector.getDb());
     }
 
+    public List<Advert> findAll() {
+        return advertisementRepository.getAll();
+    }
+
+    public void delete(Advert advert) {
+        advertisementRepository.remove(advert);
+    }
+
     @Deprecated
     public void extractAllPages(String url) throws IOException {
         logger.info("Processing all pages for URL [{}]", url);
