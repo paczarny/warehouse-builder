@@ -63,6 +63,7 @@ public class AdvertService {
         advert.setId(id);
         advert.setUrl(url);
         advert.setPrice(pageScrapper.getPrice());
+        advert.setArea(pageScrapper.getArea());
 
         if (advertisementRepository.contains(id)) {
             Advert existingAdv = advertisementRepository.get(id);

@@ -15,6 +15,15 @@ public class Advert {
     @JsonProperty
     private Long price;
 
+    @JsonProperty
+    private float area;
+
+    @JsonProperty
+    private String username;
+
+    public Advert() {
+    }
+
     public void setRevision(String revision) {
         this.revision = revision;
     }
@@ -46,4 +55,12 @@ public class Advert {
     public void setId(String id) {
         this.id = id;
     }
+
+    public float getArea() { return area; }
+
+    public void setArea(float area) { this.area = area; }
+
+    public String getUsername() { return username; }
+
+    public void setUsername(String username) { this.username = username; }
 }
