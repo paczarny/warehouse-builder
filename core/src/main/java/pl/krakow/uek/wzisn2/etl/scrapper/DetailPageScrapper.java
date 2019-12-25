@@ -27,19 +27,25 @@ public class DetailPageScrapper {
     }
 
     public float getArea() {
-        Elements table = doc.getElementsByClass("details fixed marginbott20 margintop5 full")
-                .select("tbody > tr > td > table > tbody > tr");
+        Elements table = doc.getElementsByClass("details fixed marginbott20 margintop5 full");
         String areaText = this.getValueFromTableRow(table, "Powierzchnia");
-        String pureNumber = areaText.replaceAll("[^0-9|^.]", "");
+        String number = areaText.replaceAll("[^0-9|^,]", "");
+        String pureNumber = number.replaceAll("[,]", ".");
         return Float.parseFloat(pureNumber);
     }
 
-    private String getValueFromTableRow(Elements elements, String thName) {
+    public String getMarket() {
+        Elements table = doc.getElementsByClass("details fixed marginbott20 margintop5 full");
+        return this.getValueFromTableRow(table, "Rynek");
+    }
+
+    private String getValueFromTableRow(Elements table, String thName) {
+        Elements elements = table.select("tbody > tr > td > table > tbody > tr");
         String val = "";
         for(var element : elements) {
             if(element.select("th").text().equals(thName)) {
                 val = element.select("td > strong").text();
-                break;
+                return val;
             }
         }
         return val;

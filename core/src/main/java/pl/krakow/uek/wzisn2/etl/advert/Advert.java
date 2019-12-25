@@ -21,6 +21,9 @@ public class Advert {
     @JsonProperty
     private String username;
 
+    @JsonProperty
+    private String market;
+
     public Advert() {
     }
 
@@ -63,4 +66,8 @@ public class Advert {
     public String getUsername() { return username; }
 
     public void setUsername(String username) { this.username = username; }
+
+    public String getMarket() { return market; }
+
+    public void setMarket(String market) { this.market = market; }
 }
