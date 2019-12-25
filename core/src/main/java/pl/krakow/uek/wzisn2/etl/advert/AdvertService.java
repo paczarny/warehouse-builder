@@ -3,9 +3,11 @@ package pl.krakow.uek.wzisn2.etl.advert;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.krakow.uek.wzisn2.etl.db.DatabaseConnector;
+import pl.krakow.uek.wzisn2.etl.helper.AdvertCsvWriter;
 import pl.krakow.uek.wzisn2.etl.scrapper.DetailPageScrapper;
 import pl.krakow.uek.wzisn2.etl.scrapper.ListPageScrapper;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,9 +15,11 @@ import java.util.stream.Collectors;
 public class AdvertService {
     private final Logger logger = LoggerFactory.getLogger(AdvertService.class);
     private final AdvertRepository advertisementRepository;
+    private AdvertCsvWriter csvWriter;
 
     public AdvertService(DatabaseConnector connector) {
         this.advertisementRepository = new AdvertRepository(connector.getDb());
+        this.csvWriter = new AdvertCsvWriter();
     }
 
     public List<Advert> findAll() {
@@ -75,5 +79,11 @@ public class AdvertService {
         } else {
             advertisementRepository.add(advert);
         }
+    }
+
+    public void exportAllData(String[] header, String path_) throws Exception {
+        File file = new File(path_);
+        this.csvWriter.writeOneLine(header, path_);
+        this.csvWriter.writeAll(this.advertisementRepository.getAll(), file.getPath());
     }
 }

@@ -1,5 +1,6 @@
 package pl.krakow.uek.wzisn2.etl.advert;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Advert {
@@ -77,4 +78,17 @@ public class Advert {
     public String getConstructionType() { return constructionType; }
 
     public void setConstructionType(String constructionType) { this.constructionType = constructionType; }
+
+    @JsonIgnore
+    public String[] getAttributesArray() {
+        return new String[]{
+                this.id,
+                Long.toString(this.price),
+                this.revision,
+                Float.toString(this.area),
+                this.market,
+                this.constructionType,
+                this.username
+        };
+    }
 }

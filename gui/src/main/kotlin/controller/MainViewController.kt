@@ -66,6 +66,12 @@ class MainViewController : Controller() {
         println("Load process started")
     }
 
+    fun exportAll() {
+        logger.info("Export all data into the CSV file")
+        val header = arrayOf<String>("Id", "Price", "Revision", "Area", "Market", "Construction Type", "Username")
+        advertService.exportAllData(header,"myData.csv");
+    }
+
     fun clearDb(progressProperty: SimpleObjectProperty<Pair<Long, Long>>) {
         val allAdverts = advertService.findAll()
         for ((index, advert) in allAdverts.withIndex()) {
