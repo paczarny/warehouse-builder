@@ -36,6 +36,9 @@ class MainView : View() {
             add(ProgressButton("Run L process", disable) {
                 controller.startL()
             })
+            add(ProgressButton("Export all to CSV", disable) {
+                controller.exportAll()
+            })
             add(ProgressButton("Clear database", disable) {
                 controller.clearDb(it)
             })
