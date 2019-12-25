@@ -39,6 +39,17 @@ public class DetailPageScrapper {
         return this.getValueFromTableRow(table, "Rynek");
     }
 
+    public String getConstructionType() {
+        Elements table = doc.getElementsByClass("details fixed marginbott20 margintop5 full");
+        return this.getValueFromTableRow(table, "Rodzaj zabudowy");
+    }
+
+    public String getUsername() {
+        Elements userDetails = doc.getElementsByClass("offer-user__details");
+        Elements usernameLink = userDetails.select("h4 > a");
+        return usernameLink.text();
+    }
+
     private String getValueFromTableRow(Elements table, String thName) {
         Elements elements = table.select("tbody > tr > td > table > tbody > tr");
         String val = "";

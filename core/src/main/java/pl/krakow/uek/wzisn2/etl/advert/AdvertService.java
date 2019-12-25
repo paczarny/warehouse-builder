@@ -65,6 +65,8 @@ public class AdvertService {
         advert.setPrice(pageScrapper.getPrice());
         advert.setArea(pageScrapper.getArea());
         advert.setMarket(pageScrapper.getMarket());
+        advert.setConstructionType(pageScrapper.getConstructionType());
+        advert.setUsername(pageScrapper.getUsername());
 
         if (advertisementRepository.contains(id)) {
             Advert existingAdv = advertisementRepository.get(id);

@@ -52,6 +52,8 @@ class MainView : View() {
                 column("Revision", Advert::getRevision)
                 column("Area", Advert::getArea)
                 column("Market", Advert::getMarket)
+                column("Construction Type", Advert::getConstructionType)
+                column("Username", Advert::getUsername)
             }
             label(controller.advertsSize)
         }
