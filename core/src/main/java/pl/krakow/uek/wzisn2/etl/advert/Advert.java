@@ -24,6 +24,9 @@ public class Advert {
     @JsonProperty
     private String market;
 
+    @JsonProperty
+    private String constructionType;
+
     public Advert() {
     }
 
@@ -70,4 +73,8 @@ public class Advert {
     public String getMarket() { return market; }
 
     public void setMarket(String market) { this.market = market; }
+
+    public String getConstructionType() { return constructionType; }
+
+    public void setConstructionType(String constructionType) { this.constructionType = constructionType; }
 }
