@@ -67,9 +67,15 @@ class MainViewController : Controller() {
     }
 
     fun exportAll() {
-        logger.info("Export all data into the CSV file")
+        logger.info("Export into the one CSV file")
         val header = arrayOf<String>("Id", "Price", "Revision", "Area", "Market", "Construction Type", "Username")
-        advertService.exportAllData(header,"myData.csv");
+        advertService.exportAllData(header, "files/allData.csv");
+    }
+
+    fun exportSingly() {
+        logger.info("Export into single files")
+        val header = arrayOf<String>("Id", "Price", "Revision", "Area", "Market", "Construction Type", "Username")
+        advertService.exportSingly(header,"files/");
     }
 
     fun clearDb(progressProperty: SimpleObjectProperty<Pair<Long, Long>>) {

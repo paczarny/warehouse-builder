@@ -6,9 +6,15 @@ import java.io.FileWriter;
 import java.util.List;
 
 public class AdvertCsvWriter {
-    public void writeOneLine(String[] stringArray, String path) throws Exception {
+    public void writeHeader(String[] stringArray, String path) throws Exception {
         CSVWriter writer = new CSVWriter(new FileWriter(path));
         writer.writeNext(stringArray);
+        writer.close();
+    }
+
+    public void writeOne(String[] advert, String path) throws Exception {
+        CSVWriter writer = new CSVWriter(new FileWriter(path, true));
+        writer.writeNext(advert);
         writer.close();
     }
 
