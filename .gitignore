@@ -187,3 +187,6 @@ gradle-app.setting
 **/build/
 
 # End of https://www.gitignore.io/api/java,linux,gradle,kotlin,windows,intellij+all
+
+# Exported data
+*.csv

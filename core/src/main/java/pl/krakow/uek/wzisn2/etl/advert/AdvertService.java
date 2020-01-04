@@ -83,7 +83,17 @@ public class AdvertService {
 
     public void exportAllData(String[] header, String path_) throws Exception {
         File file = new File(path_);
-        this.csvWriter.writeOneLine(header, path_);
+        this.csvWriter.writeHeader(header, path_);
         this.csvWriter.writeAll(this.advertisementRepository.getAll(), file.getPath());
+    }
+
+    public void exportSingly(String[] header, String path_) throws Exception {
+        List<Advert> adverts = this.findAll();
+        String name = "";
+        for (Advert advert: adverts) {
+            name = path_ + advert.getId() + ".csv";
+            this.csvWriter.writeHeader(header, name);
+            this.csvWriter.writeOne(advert.getAttributesArray(), name);
+        }
     }
 }
