@@ -18,7 +18,7 @@ public class LoadService {
     public void load(List<Advert> adverts) {
         for (int i = 0; i < adverts.size(); i++) {
             loadAdvert(adverts.get(i));
-            log.info("Advert {}/{} loaded", i + 1, adverts.size());
+            log.info("Advert {}/{} processed", i + 1, adverts.size());
         }
         log.info("All adverts loaded");
     }
@@ -29,8 +29,10 @@ public class LoadService {
             Advert existingAdv = advertisementRepository.get(id);
             advert.setRevision(existingAdv.getRevision());
             advertisementRepository.update(advert);
+            log.info("Advert " + id + " updated");
         } else {
             advertisementRepository.add(advert);
+            log.info("Advert " + id + " added");
         }
     }
 }
