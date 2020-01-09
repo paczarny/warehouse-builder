@@ -47,7 +47,7 @@ class MainView : View() {
                 controller.exportAll()
             })
             add(ProgressButton("Clear database", disable) {
-                controller.clearDb(it)
+                controller.clearDb()
             })
         }
 

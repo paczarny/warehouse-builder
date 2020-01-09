@@ -1,7 +1,6 @@
 package pl.krakow.uek.wzisn2.etl.controller
 
 import javafx.beans.property.SimpleBooleanProperty
-import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
@@ -55,13 +54,6 @@ class MainViewController : Controller() {
         startL(loadInProgress)
     }
 
-    private fun updateProgress(progressProperty: SimpleObjectProperty<Pair<Long, Long>>, i: Int, lastPage: Int, refresh: Boolean = true) {
-        runLater {
-            progressProperty.set(Pair(i.toLong(), lastPage.toLong()))
-            if (refresh) refreshList()
-        }
-    }
-
     fun startE(inProgress: SimpleBooleanProperty) {
         logger.info("Extract process started")
         inProgress.value = true
@@ -81,6 +73,7 @@ class MainViewController : Controller() {
         inProgress.value = true
         loadService.load(transformedPages)
         inProgress.value = false
+        refreshList()
     }
 
     fun exportAll() {
@@ -91,23 +84,24 @@ class MainViewController : Controller() {
 
     fun exportSingly() {
         logger.info("Export into single files")
-        val header = arrayOf<String>("Id", "Price", "Revision", "Area", "Market", "Construction Type", "Username")
+        val header = arrayOf("Id", "Price", "Revision", "Area", "Market", "Construction Type", "Username")
         advertService.exportSingly(header, "files/");
     }
 
-    fun clearDb(progressProperty: SimpleObjectProperty<Pair<Long, Long>>) {
+    fun clearDb() {
         val allAdverts = advertService.findAll()
-        for ((index, advert) in allAdverts.withIndex()) {
-            updateProgress(progressProperty, index, allAdverts.size, false)
+        for (advert in allAdverts) {
             advertService.delete(advert)
         }
-        updateProgress(progressProperty, allAdverts.size, allAdverts.size)
+        refreshList()
     }
 
     private fun refreshList() {
-        val allAdverts = advertService.findAll()
-        adverts.clear()
-        adverts.addAll(allAdverts)
-        advertsSize.value = "${allAdverts.size} items"
+        runLater {
+            val allAdverts = advertService.findAll()
+            adverts.clear()
+            adverts.addAll(allAdverts)
+            advertsSize.value = "${allAdverts.size} items"
+        }
     }
 }
