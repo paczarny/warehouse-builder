@@ -24,18 +24,22 @@ class MainView : View() {
                     fontWeight = FontWeight.EXTRA_BOLD
                 }
             }
+            val extractButton = ProgressButton("Run E process", disable) {
+                controller.startE(disable)
+            }
+            val transformButton = ProgressButton("Run T process", disable) {
+                controller.startT(disable)
+            }
+            val loadButton = ProgressButton("Run L process", disable) {
+                controller.startL(disable)
+            }
             add(ProgressButton("Run ETL process", disable) {
-                controller.startEtl(it)
+                controller.startEtl(extractButton.actionInProgress, transformButton.actionInProgress, loadButton.actionInProgress)
             })
-            add(ProgressButton("Run E process", disable) {
-                controller.startE(it)
-            })
-            add(ProgressButton("Run T process", disable) {
-                controller.startT()
-            })
-            add(ProgressButton("Run L process", disable) {
-                controller.startL()
-            })
+
+            add(extractButton)
+            add(transformButton)
+            add(loadButton)
             add(ProgressButton("Export singly", disable) {
                 controller.exportSingly()
             })

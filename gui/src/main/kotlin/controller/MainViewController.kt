@@ -1,15 +1,20 @@
 package pl.krakow.uek.wzisn2.etl.controller
 
+import javafx.beans.property.SimpleBooleanProperty
 import javafx.beans.property.SimpleObjectProperty
 import javafx.beans.property.SimpleStringProperty
 import javafx.collections.FXCollections
 import javafx.collections.ObservableList
 import org.slf4j.LoggerFactory
 import pl.krakow.uek.wzisn2.etl.advert.Advert
+import pl.krakow.uek.wzisn2.etl.advert.AdvertRepository
 import pl.krakow.uek.wzisn2.etl.advert.AdvertService
 import pl.krakow.uek.wzisn2.etl.db.DatabaseConnector
+import pl.krakow.uek.wzisn2.etl.etl.ExtractService
+import pl.krakow.uek.wzisn2.etl.etl.LoadService
+import pl.krakow.uek.wzisn2.etl.etl.TransformService
+import pl.krakow.uek.wzisn2.etl.scrapper.DetailPageScrapper
 import tornadofx.*
-import java.lang.Thread.sleep
 
 class MainViewController : Controller() {
     val advertsSize = SimpleStringProperty()
@@ -17,27 +22,37 @@ class MainViewController : Controller() {
 
     private var advertService: AdvertService
     private var connector: DatabaseConnector = DatabaseConnector()
+    private val extractService: ExtractService
+    private val transformService: TransformService
+    private val loadService: LoadService
+    private val advertRepository: AdvertRepository
+
+    private var pages = emptyList<DetailPageScrapper>()
+    private var transformedPages = emptyList<Advert>()
 
     var adverts: ObservableList<Advert> = FXCollections.observableArrayList<Advert>()
 
     init {
+        val url = "https://www.olx.pl/nieruchomosci/domy/krakow/"
         connector.start()
-        advertService = AdvertService(connector)
+
+        advertRepository = AdvertRepository(connector.db)
+        advertService = AdvertService(advertRepository)
+        extractService = ExtractService(url)
+        transformService = TransformService()
+        loadService = LoadService(advertRepository)
+
         refreshList()
     }
 
-    fun startEtl(progressProperty: SimpleObjectProperty<Pair<Long, Long>>) {
-        logger.info("ETL process started")
-        val url = "https://www.olx.pl/nieruchomosci/domy/krakow/"
-        val lastPage = advertService.getLastPage(url)
-
-        for (i in 1 until lastPage) {
-            logger.info("Processing $i/$lastPage page")
-            updateProgress(progressProperty, i, lastPage)
-            advertService.scrapListPage("$url?page=$i")
-        }
-        updateProgress(progressProperty, lastPage, lastPage)
-        logger.info("End")
+    fun startEtl(
+            extractInProgress: SimpleBooleanProperty,
+            transformInProgress: SimpleBooleanProperty,
+            loadInProgress: SimpleBooleanProperty
+    ) {
+        startE(extractInProgress)
+        startT(transformInProgress)
+        startL(loadInProgress)
     }
 
     private fun updateProgress(progressProperty: SimpleObjectProperty<Pair<Long, Long>>, i: Int, lastPage: Int, refresh: Boolean = true) {
@@ -47,35 +62,37 @@ class MainViewController : Controller() {
         }
     }
 
-    fun startE(progressProperty: SimpleObjectProperty<Pair<Long, Long>>) {
+    fun startE(inProgress: SimpleBooleanProperty) {
         logger.info("Extract process started")
-        val lastPage = 10
-        for (i in 1 until lastPage) {
-            logger.info("Processing $i/$lastPage page")
-            updateProgress(progressProperty, i, 10)
-            sleep(1000)
-        }
-        updateProgress(progressProperty, lastPage, lastPage)
+        inProgress.value = true
+        pages = extractService.extractAllAdverts()
+        inProgress.value = false
     }
 
-    fun startT() {
+    fun startT(inProgress: SimpleBooleanProperty) {
         println("Transform process started")
+        inProgress.value = true
+        transformedPages = transformService.transformPages(pages)
+        inProgress.value = false
     }
 
-    fun startL() {
+    fun startL(inProgress: SimpleBooleanProperty) {
         println("Load process started")
+        inProgress.value = true
+        loadService.load(transformedPages)
+        inProgress.value = false
     }
 
     fun exportAll() {
         logger.info("Export into the one CSV file")
-        val header = arrayOf<String>("Id", "Price", "Revision", "Area", "Market", "Construction Type", "Username")
+        val header = arrayOf("Id", "Price", "Revision", "Area", "Market", "Construction Type", "Username")
         advertService.exportAllData(header, "files/allData.csv");
     }
 
     fun exportSingly() {
         logger.info("Export into single files")
         val header = arrayOf<String>("Id", "Price", "Revision", "Area", "Market", "Construction Type", "Username")
-        advertService.exportSingly(header,"files/");
+        advertService.exportSingly(header, "files/");
     }
 
     fun clearDb(progressProperty: SimpleObjectProperty<Pair<Long, Long>>) {
