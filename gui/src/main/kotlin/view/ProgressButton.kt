@@ -7,7 +7,7 @@ import pl.krakow.uek.wzisn2.etl.controller.AppStylesheet
 import tornadofx.*
 
 class ProgressButton(title: String, disabled: SimpleBooleanProperty, actionOnClick: (SimpleObjectProperty<Pair<Long, Long>>) -> Unit) : View() {
-    private var actionInProgress = SimpleBooleanProperty()
+    var actionInProgress = SimpleBooleanProperty()
     var progressValues = SimpleDoubleProperty()
     var progressObs = SimpleObjectProperty(Pair<Long, Long>(0, 0))
 

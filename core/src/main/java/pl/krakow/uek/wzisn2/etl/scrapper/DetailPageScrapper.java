@@ -3,12 +3,12 @@ package pl.krakow.uek.wzisn2.etl.scrapper;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
-
 public class DetailPageScrapper {
     private Document doc;
+    private final String url;
 
-    public DetailPageScrapper(String url) throws IOException {
+    public DetailPageScrapper(String url) {
+        this.url = url;
         WebsiteDownloader web = new WebsiteDownloader();
         doc = web.getDocument(url);
     }
@@ -53,12 +53,16 @@ public class DetailPageScrapper {
     private String getValueFromTableRow(Elements table, String thName) {
         Elements elements = table.select("tbody > tr > td > table > tbody > tr");
         String val = "";
-        for(var element : elements) {
-            if(element.select("th").text().equals(thName)) {
+        for (var element : elements) {
+            if (element.select("th").text().equals(thName)) {
                 val = element.select("td > strong").text();
                 return val;
             }
         }
         return val;
+    }
+
+    public String getUrl() {
+        return url;
     }
 }
