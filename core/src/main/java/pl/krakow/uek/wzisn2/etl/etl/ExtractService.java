@@ -18,6 +18,12 @@ public class ExtractService {
         URL = url;
     }
 
+    /**
+     * Extracts adverts from external page
+     *
+     * @return list of extracted pages
+     * @throws IOException
+     */
     public List<DetailPageScrapper> extractAllAdverts() throws IOException {
         log.info("Preparing URLs");
         Integer lastPage = getLastPage(URL);

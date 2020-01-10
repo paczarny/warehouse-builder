@@ -11,6 +11,12 @@ import java.util.List;
 public class TransformService {
     private final Logger log = LoggerFactory.getLogger(TransformService.class);
 
+    /**
+     * Transforms adverts from raw page to advert entity
+     *
+     * @param pages pages to process
+     * @return list of processed adverts
+     */
     public List<Advert> transformPages(List<DetailPageScrapper> pages) {
         List<Advert> adverts = new ArrayList<>();
 

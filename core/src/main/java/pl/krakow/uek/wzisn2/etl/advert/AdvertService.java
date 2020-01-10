@@ -17,20 +17,44 @@ public class AdvertService {
         this.csvWriter = new AdvertCsvWriter();
     }
 
+    /**
+     * Finds all Adverts in database
+     *
+     * @return list of Adverts
+     */
     public List<Advert> findAll() {
         return advertisementRepository.getAll();
     }
 
+    /**
+     * Deletes advert
+     *
+     * @param advert object to delete
+     */
     public void delete(Advert advert) {
         advertisementRepository.remove(advert);
     }
 
+    /**
+     * Exports all rows to CSV
+     *
+     * @param header list of headers
+     * @param path_  path to save file
+     * @throws Exception
+     */
     public void exportAllData(String[] header, String path_) throws Exception {
         File file = new File(path_);
         this.csvWriter.writeHeader(header, path_);
         this.csvWriter.writeAll(this.advertisementRepository.getAll(), file.getPath());
     }
 
+    /**
+     * Exports single row to CSV
+     *
+     * @param header list of headers
+     * @param path_  path to save file
+     * @throws Exception
+     */
     public void exportSingly(String[] header, String path_) throws Exception {
         List<Advert> adverts = this.findAll();
         String name = "";

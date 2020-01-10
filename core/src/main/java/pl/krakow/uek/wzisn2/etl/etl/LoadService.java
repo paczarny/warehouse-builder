@@ -15,6 +15,11 @@ public class LoadService {
         this.advertisementRepository = advertisementRepository;
     }
 
+    /**
+     * Loads adverts into database
+     *
+     * @param adverts list of adverts to load
+     */
     public void load(List<Advert> adverts) {
         for (int i = 0; i < adverts.size(); i++) {
             loadAdvert(adverts.get(i));

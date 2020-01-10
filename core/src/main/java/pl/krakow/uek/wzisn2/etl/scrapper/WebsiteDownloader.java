@@ -8,6 +8,12 @@ import java.io.IOException;
 
 public class WebsiteDownloader {
 
+    /**
+     * Downloads page
+     *
+     * @param address URL to download
+     * @return fetched page
+     */
     public Document getDocument(String address) {
         try {
             System.setProperty("https.protocols", "TLSv1,TLSv1.1,TLSv1.2");
