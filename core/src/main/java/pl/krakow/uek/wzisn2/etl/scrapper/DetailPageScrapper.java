@@ -3,6 +3,9 @@ package pl.krakow.uek.wzisn2.etl.scrapper;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
+/**
+ * Class representing single advertisement
+ */
 public class DetailPageScrapper {
     private Document doc;
     private final String url;
@@ -13,6 +16,9 @@ public class DetailPageScrapper {
         doc = web.getDocument(url);
     }
 
+    /**
+     * @return unique id of advertisement
+     */
     public String getId() {
         Elements details = doc.getElementsByClass("offer-titlebox__details");
         Elements small = details.select("small");
