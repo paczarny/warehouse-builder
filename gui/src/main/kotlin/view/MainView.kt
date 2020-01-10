@@ -10,7 +10,10 @@ import tornadofx.*
 
 class MainView : View() {
     private val controller: MainViewController by inject()
-    private val disable = SimpleBooleanProperty(false)
+    private val disableETL = SimpleBooleanProperty(false)
+    private val disableE = SimpleBooleanProperty(false)
+    private val disableT = SimpleBooleanProperty(true)
+    private val disableL = SimpleBooleanProperty(true)
 
     override val root = borderpane {
         left = vbox {
@@ -24,29 +27,37 @@ class MainView : View() {
                     fontWeight = FontWeight.EXTRA_BOLD
                 }
             }
-            val extractButton = ProgressButton("Run E process", disable) {
-                controller.startE(disable)
+            val extractButton = ProgressButton("Run E process", disableE) {
+                disableAll()
+                controller.startE()
+                enable(disableETL, disableE, disableT)
             }
-            val transformButton = ProgressButton("Run T process", disable) {
-                controller.startT(disable)
+            val transformButton = ProgressButton("Run T process", disableT) {
+                disableAll()
+                controller.startT()
+                enable(disableETL, disableE, disableT, disableL)
             }
-            val loadButton = ProgressButton("Run L process", disable) {
-                controller.startL(disable)
+            val loadButton = ProgressButton("Run L process", disableL) {
+                disableAll()
+                controller.startL()
+                enable(disableETL, disableE, disableT, disableL)
             }
-            add(ProgressButton("Run ETL process", disable) {
-                controller.startEtl(extractButton.actionInProgress, transformButton.actionInProgress, loadButton.actionInProgress)
-            })
 
+            add(ProgressButton("Run ETL process", disableETL) {
+                disableAll()
+                controller.startEtl(disableETL, extractButton, transformButton, loadButton)
+                enable(disableETL, disableE, disableT, disableL)
+            })
             add(extractButton)
             add(transformButton)
             add(loadButton)
-            add(ProgressButton("Export singly", disable) {
+            add(ProgressButton("Export singly", disableETL) {
                 controller.exportSingly()
             })
-            add(ProgressButton("Export all", disable) {
+            add(ProgressButton("Export all", disableETL) {
                 controller.exportAll()
             })
-            add(ProgressButton("Clear database", disable) {
+            add(ProgressButton("Clear database", disableETL) {
                 controller.clearDb()
             })
         }
@@ -67,5 +78,16 @@ class MainView : View() {
             }
             label(controller.advertsSize)
         }
+    }
+
+    private fun disableAll() {
+        disableETL.value = true
+        disableE.value = true
+        disableT.value = true
+        disableL.value = true
+    }
+
+    private fun enable(vararg booleans: SimpleBooleanProperty) {
+        booleans.forEach { it.value = false }
     }
 }

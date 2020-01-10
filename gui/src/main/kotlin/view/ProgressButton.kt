@@ -5,8 +5,8 @@ import pl.krakow.uek.wzisn2.etl.controller.AppStylesheet
 import tornadofx.*
 
 class ProgressButton(title: String, disabled: SimpleBooleanProperty, actionOnClick: () -> Unit) : View() {
-    var actionInProgress = SimpleBooleanProperty()
-    var isFinished = SimpleBooleanProperty()
+    private var actionInProgress = SimpleBooleanProperty()
+    private var isFinished = SimpleBooleanProperty()
 
     override val root = hbox {
         prefHeight = 10.0
@@ -17,21 +17,11 @@ class ProgressButton(title: String, disabled: SimpleBooleanProperty, actionOnCli
             addClass(AppStylesheet.button)
             action {
                 runAsync {
-                    try {
-                        isFinished.value = false
-                        actionInProgress.value = true
-                        disabled.value = true
-                        actionOnClick()
-                    } finally {
-                        actionInProgress.value = false
-                        isFinished.value = true
-                        disabled.value = false
-                    }
+                    invokeAction(disabled, actionOnClick)
                 }
             }
             disableWhen { disabled }
         }
-
         progressindicator {
             addClass(AppStylesheet.progress)
             visibleWhen { actionInProgress }
@@ -39,6 +29,20 @@ class ProgressButton(title: String, disabled: SimpleBooleanProperty, actionOnCli
         label {
             text = "Done!"
             visibleWhen { isFinished }
+        }
+    }
+
+    fun invokeAction(disabled: SimpleBooleanProperty, actionOnClick: () -> Unit) {
+        try {
+            isFinished.value = false
+            actionInProgress.value = true
+//            disabled.value = true
+
+            actionOnClick()
+        } finally {
+            actionInProgress.value = false
+            isFinished.value = true
+//            disabled.value = false
         }
     }
 }

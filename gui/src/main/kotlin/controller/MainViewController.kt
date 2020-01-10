@@ -13,6 +13,7 @@ import pl.krakow.uek.wzisn2.etl.etl.ExtractService
 import pl.krakow.uek.wzisn2.etl.etl.LoadService
 import pl.krakow.uek.wzisn2.etl.etl.TransformService
 import pl.krakow.uek.wzisn2.etl.scrapper.DetailPageScrapper
+import pl.krakow.uek.wzisn2.etl.view.ProgressButton
 import tornadofx.*
 
 class MainViewController : Controller() {
@@ -45,34 +46,29 @@ class MainViewController : Controller() {
     }
 
     fun startEtl(
-            extractInProgress: SimpleBooleanProperty,
-            transformInProgress: SimpleBooleanProperty,
-            loadInProgress: SimpleBooleanProperty
+            disabled: SimpleBooleanProperty,
+            extractButton: ProgressButton,
+            transformButton: ProgressButton,
+            loadButton: ProgressButton
     ) {
-        startE(extractInProgress)
-        startT(transformInProgress)
-        startL(loadInProgress)
+        extractButton.invokeAction(disabled) { startE() }
+        transformButton.invokeAction(disabled) { startT() }
+        loadButton.invokeAction(disabled) { startL() }
     }
 
-    fun startE(inProgress: SimpleBooleanProperty) {
+    fun startE() {
         logger.info("Extract process started")
-        inProgress.value = true
         pages = extractService.extractAllAdverts()
-        inProgress.value = false
     }
 
-    fun startT(inProgress: SimpleBooleanProperty) {
+    fun startT() {
         println("Transform process started")
-        inProgress.value = true
         transformedPages = transformService.transformPages(pages)
-        inProgress.value = false
     }
 
-    fun startL(inProgress: SimpleBooleanProperty) {
+    fun startL() {
         println("Load process started")
-        inProgress.value = true
         loadService.load(transformedPages)
-        inProgress.value = false
         refreshList()
     }
 
